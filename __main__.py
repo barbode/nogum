@@ -1,6 +1,6 @@
 import pygame
 import sys
-from colors import white
+from colors import *
 from calculations import *
 from config import *
 
@@ -25,10 +25,8 @@ while True:
     # پاک کردن صفحه
     screen.fill(white)  # رنگ سفید
 
-    # ellipsis
-    pygame.draw.ellipse(
-        screen, white, (0, 0, 200, 100))
-
+    
+    
     surfaces = move_everything()
 
     # رسم تصویر در موقعیت (x, y)
@@ -37,6 +35,15 @@ while True:
         position: tuple[float] = image["position"]
         screen.blit(surface, position)
 
+    pygame.draw.arc(screen, white, (540, 250, 240, 120), 0, 180, 1)
+    pygame.draw.arc(screen, white, (470, 210, 380, 200), 0, 180, 1)
+    pygame.draw.arc(screen, white, (400, 170, 530, 290), 0, 180, 1)
+    pygame.draw.arc(screen, white, (330, 125, 670, 390), 0, 180, 1)
+    pygame.draw.arc(screen, white, (280, 80, 780, 490), 0, 180, 1)
+    pygame.draw.arc(screen, white, (220, 40, 900, 580), 0, 180, 1)
+    pygame.draw.arc(screen, white, (170, 0, 1010, 670), 0, 180, 1)
+    pygame.draw.arc(screen, white, (100, -40, 1150, 760), 0, 180, 1)
+    
     # به‌روزرسانی نمایش
     pygame.display.flip()
 
