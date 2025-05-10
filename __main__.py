@@ -15,35 +15,33 @@ pygame.display.set_caption("Solar System")
 clock = pygame.time.Clock()
 
 
-# حلقه اصلی بازی
+# Game loop
+
 while True:
+    # exit game on quit
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
-    # پاک کردن صفحه
-    screen.fill(white)  # رنگ سفید
+    # clear screen - white
+    screen.fill(white)
 
-    
-    
     surfaces = move_everything()
 
-    # رسم تصویر در موقعیت (x, y)
-    for image in images:
-        surface: Surface = image["surface"]
-        position: tuple[float] = image["position"]
+    # draw bg image
+    screen.blit(bg_image["surface"], bg_image["position"])
+
+    # draw arc lines
+    for arc_line in arc_lines:
+        pygame.draw.arc(screen, white_faded, arc_line, 0, 180, 1)
+
+    # draw planets
+    for planet in planets:
+        surface: pygame.Surface = planet["surface"]
+        position: tuple[float] = planet["position"]
         screen.blit(surface, position)
 
-    pygame.draw.arc(screen, white, (540, 250, 240, 120), 0, 180, 1)
-    pygame.draw.arc(screen, white, (470, 210, 380, 200), 0, 180, 1)
-    pygame.draw.arc(screen, white, (400, 170, 530, 290), 0, 180, 1)
-    pygame.draw.arc(screen, white, (330, 125, 670, 390), 0, 180, 1)
-    pygame.draw.arc(screen, white, (280, 80, 780, 490), 0, 180, 1)
-    pygame.draw.arc(screen, white, (220, 40, 900, 580), 0, 180, 1)
-    pygame.draw.arc(screen, white, (170, 0, 1010, 670), 0, 180, 1)
-    pygame.draw.arc(screen, white, (100, -40, 1150, 760), 0, 180, 1)
-    
     # به‌روزرسانی نمایش
     pygame.display.flip()
 

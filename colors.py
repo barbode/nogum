@@ -1,3 +1,5 @@
-white = (255, 255, 255)
+import pygame
 
-red = (255, 0, 0)
+white = pygame.Color(255, 255, 255)
+white_faded = pygame.Color(255, 255, 255, 12)
+red = pygame.Color(255, 0, 0)

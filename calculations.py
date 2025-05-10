@@ -1,7 +1,5 @@
-from config import images
-from pygame import Surface
-import pygame
+from config import planets
+
 
 def move_everything():
-    images[6]["angle"] += 0.1
-    
+    planets[6]["angle"] += 0.1
