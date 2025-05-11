@@ -3,6 +3,7 @@ import sys
 from colors import *
 from calculations import *
 from config import *
+import math
 
 
 # مقداردهی اولیه Pygame
@@ -13,37 +14,50 @@ screen = pygame.display.set_mode(screen_size)
 pygame.display.set_caption("Solar System")
 
 clock = pygame.time.Clock()
+dt = 0
 
+# Game loop
 
-# حلقه اصلی بازی
 while True:
+    dt += clock.get_time() * 0.001 * speed
+
+    # exit game on quit
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
-    # پاک کردن صفحه
-    screen.fill(white)  # رنگ سفید
+    # clear screen - white
+    screen.fill(white)
 
-    
-    
     surfaces = move_everything()
 
-    # رسم تصویر در موقعیت (x, y)
-    for image in images:
-        surface: Surface = image["surface"]
-        position: tuple[float] = image["position"]
+    # draw background image
+    screen.blit(bg_image, (0, 0))
+
+    mid_screen = (screen_size[0]/2, screen_size[1]/2)
+
+    # draw planets
+    for planet in planets:
+        surface: pygame.Surface = planet["surface"]
+        distance: float = planet["distance"] * scale_factor
+
+        # draw arc line
+        arc_size = (distance * xy_scale[0] * 2,
+                    distance * xy_scale[1] * 2)
+        arc_left_top = (mid_screen[0] - arc_size[0]/2,
+                        mid_screen[1] - arc_size[1]/2)
+        arc_line = (arc_left_top, arc_size)
+        pygame.draw.arc(screen, white_faded, arc_line, 0, 180, 1)
+
+        # draw planet
+        mid_planet = (surface.get_width()/2, surface.get_height()/2)
+        mid = (mid_screen[0] - mid_planet[0],  mid_screen[1] - mid_planet[1])
+        planet_xy = (distance * xy_scale[0] * math.sin(dt),
+                     distance * xy_scale[1] * math.cos(dt))
+        position = (mid[0] + planet_xy[0], mid[1] + planet_xy[1])
         screen.blit(surface, position)
 
-    pygame.draw.arc(screen, white, (540, 250, 240, 120), 0, 180, 1)
-    pygame.draw.arc(screen, white, (470, 210, 380, 200), 0, 180, 1)
-    pygame.draw.arc(screen, white, (400, 170, 530, 290), 0, 180, 1)
-    pygame.draw.arc(screen, white, (330, 125, 670, 390), 0, 180, 1)
-    pygame.draw.arc(screen, white, (280, 80, 780, 490), 0, 180, 1)
-    pygame.draw.arc(screen, white, (220, 40, 900, 580), 0, 180, 1)
-    pygame.draw.arc(screen, white, (170, 0, 1010, 670), 0, 180, 1)
-    pygame.draw.arc(screen, white, (100, -40, 1150, 760), 0, 180, 1)
-    
     # به‌روزرسانی نمایش
     pygame.display.flip()
 
