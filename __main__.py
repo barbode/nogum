@@ -15,6 +15,8 @@ pygame.display.set_caption("Solar System")
 
 clock = pygame.time.Clock()
 dt = 0
+font_path = 'assets/Vazirmatn-VariableFont_wght.ttf'
+font = pygame.font.Font(font_path, 36)
 
 # Game loop
 
@@ -37,6 +39,7 @@ while True:
 
     mid_screen = (screen_size[0]/2, screen_size[1]/2)
 
+    text = font.render('منظومه شمسی', True, white)
     # draw planets
     for planet in planets:
         surface: pygame.Surface = planet["surface"]
