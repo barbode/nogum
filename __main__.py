@@ -42,7 +42,7 @@ while True:
                 click_distance = (planet["distance"]
                                   * scale_factor) + scale_factor/2
                 if get_distance(event.pos, mid_screen, xy_scale) < click_distance:
-                    print(f"Surface clicked! {planet["name"]}")
+                    print(f"clicked! {planet["name"]}")
                     selected_planet = planets.index(planet)
                     break
 
