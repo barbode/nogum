@@ -1,7 +1,6 @@
 import pygame
 import sys
 from colors import *
-from calculations import *
 from config import *
 import math
 
@@ -9,14 +8,18 @@ import math
 # مقداردهی اولیه Pygame
 pygame.init()
 
+font_title = pygame.font.Font(font_path, 36)
+font_title.set_script("Arab")
+
+
 # تنظیمات پنجره
 screen = pygame.display.set_mode(screen_size)
 pygame.display.set_caption("Solar System")
 
+# variables
 clock = pygame.time.Clock()
-dt = 0
-font_path = 'assets/Vazirmatn-VariableFont_wght.ttf'
-font = pygame.font.Font(font_path, 36)
+dt = 0 # initial time
+
 
 # Game loop
 
@@ -32,16 +35,22 @@ while True:
     # clear screen - white
     screen.fill(white)
 
-    surfaces = move_everything()
+    mid_screen = (screen_size[0]/2, screen_size[1]/2)
 
     # draw background image
     screen.blit(bg_image, (0, 0))
 
-    mid_screen = (screen_size[0]/2, screen_size[1]/2)
+    # title
+    text = font_title.render('منظومه شمسی'[::-1], True, white)
+    screen.blit(text, (screen_size[0] - 270, 12))
 
-    text = font.render('منظومه شمسی', True, white)
+    # subtitle
+    # TODO ...
+
     # draw planets
     for planet in planets:
+        angle: float = planet["angle"]
+        speed: float = planet["speed"]
         surface: pygame.Surface = planet["surface"]
         distance: float = planet["distance"] * scale_factor
 
@@ -56,8 +65,9 @@ while True:
         # draw planet
         mid_planet = (surface.get_width()/2, surface.get_height()/2)
         mid = (mid_screen[0] - mid_planet[0],  mid_screen[1] - mid_planet[1])
-        planet_xy = (distance * xy_scale[0] * math.sin(dt),
-                     distance * xy_scale[1] * math.cos(dt))
+        theta = speed * (dt + angle)
+        planet_xy = (distance * xy_scale[0] * math.sin(theta),
+                     distance * xy_scale[1] * math.cos(theta))
         position = (mid[0] + planet_xy[0], mid[1] + planet_xy[1])
         screen.blit(surface, position)
 
