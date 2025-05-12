@@ -2,6 +2,7 @@ import pygame
 import sys
 from colors import *
 from config import *
+from calc import *
 import math
 
 
@@ -17,9 +18,12 @@ screen = pygame.display.set_mode(screen_size)
 pygame.display.set_caption("Solar System")
 
 # variables
+selected_planet = -1
 clock = pygame.time.Clock()
-dt = 0 # initial time
+dt = 0  # initial time
 
+
+mid_screen = (screen_size[0]/2, screen_size[1]/2)
 
 # Game loop
 
@@ -32,10 +36,18 @@ while True:
             pygame.quit()
             sys.exit()
 
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            selected_planet = -1
+            for planet in planets:
+                click_distance = (planet["distance"]
+                                  * scale_factor) + scale_factor/2
+                if get_distance(event.pos, mid_screen, xy_scale) < click_distance:
+                    print(f"Surface clicked! {planet["name"]}")
+                    selected_planet = planets.index(planet)
+                    break
+
     # clear screen - white
     screen.fill(white)
-
-    mid_screen = (screen_size[0]/2, screen_size[1]/2)
 
     # draw background image
     screen.blit(bg_image, (0, 0))
@@ -49,6 +61,7 @@ while True:
 
     # draw planets
     for planet in planets:
+        index = planets.index(planet)
         angle: float = planet["angle"]
         speed: float = planet["speed"]
         surface: pygame.Surface = planet["surface"]
@@ -60,7 +73,7 @@ while True:
         arc_left_top = (mid_screen[0] - arc_size[0]/2,
                         mid_screen[1] - arc_size[1]/2)
         arc_line = (arc_left_top, arc_size)
-        pygame.draw.arc(screen, white_faded, arc_line, 0, 180, 1)
+        pygame.draw.arc(screen, grey, arc_line, 0, 180, 1)
 
         # draw planet
         mid_planet = (surface.get_width()/2, surface.get_height()/2)
@@ -70,6 +83,10 @@ while True:
                      distance * xy_scale[1] * math.cos(theta))
         position = (mid[0] + planet_xy[0], mid[1] + planet_xy[1])
         screen.blit(surface, position)
+
+    # draw details
+    if selected_planet > -1:
+        screen.blit(details_box, (0, 0))  # draw the faded rectangle
 
     # به‌روزرسانی نمایش
     pygame.display.flip()
